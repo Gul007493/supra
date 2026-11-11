@@ -159,8 +159,8 @@ section{position:relative}
 .ready .hero__txt,.ready .hero__btns{opacity:1;transform:none;transition:opacity 1s .95s,transform 1.2s var(--eo) .95s}
 .ready .hero__btns{transition-delay:1.08s}
 .hero__frame{position:absolute;top:var(--fy);bottom:var(--fy);left:var(--fx);right:var(--fx);pointer-events:none;opacity:0;visibility:hidden}
-.hero__frame::before{content:"";position:absolute;inset:-12px;border:1px solid var(--line)}
-.hero__frame .fl{position:absolute;top:calc(100% + 22px);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
+.hero__frame::before{content:"";position:absolute;inset:-1px;border:1px solid rgba(239,230,214,.22);border-radius:5px}
+.hero__frame .fl{position:absolute;top:calc(100% + 16px);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
 .hero__frame .fl--l{left:0}.hero__frame .fl--r{right:0;color:var(--ember)}
 .cue{position:absolute;right:var(--gut);bottom:28px;display:none}
 
@@ -248,7 +248,47 @@ section{position:relative}
 .scr__cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;padding-bottom:10px}
 .scr__close{position:fixed;top:22px;right:var(--gut);z-index:210;height:46px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:rgba(10,9,8,.7);backdrop-filter:blur(8px);font-size:13px;letter-spacing:.2em;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px}
 .scr__close:hover{border-color:var(--ember);color:var(--ember)}
-.scr-open .mbar{transform:translateY(160%)}
+.scr-open .mbar,.pv-open .mbar{transform:translateY(160%)}
+
+/* просмотр страниц полного меню */
+.pv{position:fixed;inset:0;z-index:220;background:var(--bg);display:grid;grid-template-rows:auto minmax(0,1fr) auto;grid-template-columns:minmax(0,1fr)}
+.pv[hidden]{display:none}
+.pv__top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px var(--gut);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.pv__top b{color:var(--ember);font-weight:500}
+.pv .scr__close{position:static}
+.pv__stage{position:relative;overflow:auto;overscroll-behavior:contain;display:flex;align-items:center;justify-content:center;padding:0 96px;touch-action:pan-y}
+.pv__stage.zoom{display:block;padding:0;touch-action:auto}
+.pv__slide{animation:pvIn .55s var(--eo) both;width:100%;display:flex;justify-content:center}
+@keyframes pvIn{from{opacity:0;transform:translateX(var(--dx,40px)) scale(.98)}to{opacity:1;transform:none}}
+.pv__stage img{display:block;max-width:100%;max-height:calc(100vh - 190px);max-height:calc(100svh - 190px);object-fit:contain;cursor:zoom-in;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);user-select:none;-webkit-user-drag:none}
+.pv__stage.zoom .pv__slide{animation:none}
+.pv__stage.zoom img{max-width:none;max-height:none;width:max(200%,900px);cursor:zoom-out}
+.paper{width:min(600px,100%);max-height:calc(100vh - 190px);max-height:calc(100svh - 190px);overflow:auto;overscroll-behavior:contain;background:var(--cream);color:var(--ink);padding:clamp(24px,4vw,46px);border-radius:6px;box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
+.paper__top{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#7a7166;padding-bottom:14px;border-bottom:2px solid var(--ember)}
+.paper h3{font-weight:700;font-size:clamp(40px,6vw,64px);line-height:.9;text-transform:uppercase;margin:22px 0 4px}
+.paper__tag{font-family:var(--it);font-style:italic;font-size:20px;color:#6d655b;margin-bottom:12px}
+.pp{display:grid;grid-template-columns:1fr auto;gap:2px 14px;padding:12px 0;border-bottom:1px dashed rgba(22,18,15,.25);align-items:baseline}
+.pp h4{font-weight:500;font-size:18px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
+.pp h4 i{font-style:normal;margin-left:8px;padding:1px 7px;border-radius:999px;background:var(--ember);font-size:10px;letter-spacing:.14em;vertical-align:middle}
+.pp b{font-weight:600;font-size:18px;white-space:nowrap}
+.pp p{grid-column:1/-1;font-family:var(--it);font-style:italic;font-size:17px;line-height:1.25;color:#6d655b}
+.paper__foot{margin-top:18px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8a8175}
+.pv__nav{position:absolute;top:50%;z-index:2;width:56px;height:56px;margin-top:-28px;border-radius:50%;border:1px solid var(--line);background:rgba(10,9,8,.7);font-size:22px;line-height:1;display:grid;place-items:center;transition:background .3s,color .3s,border-color .3s}
+.pv__nav:hover{background:var(--ember);color:var(--ink);border-color:var(--ember)}
+.pv__nav:disabled{opacity:.25;pointer-events:none}
+.pv__prev{left:var(--gut)}.pv__next{right:var(--gut)}
+.pv__bot{position:relative}
+.pv__thumbs{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:14px var(--gut) 10px;justify-content:safe center}
+.pv__thumbs::-webkit-scrollbar{display:none}
+.pv__th{flex:none;width:48px;height:64px;border:1px solid var(--line);border-radius:3px;overflow:hidden;opacity:.5;transition:opacity .3s,border-color .3s;background:var(--cream);color:var(--ink);font-weight:600;font-size:15px;display:grid;place-items:center}
+.pv__th img{width:100%;height:100%;object-fit:cover}
+.pv__th.on,.pv__th:hover{opacity:1;border-color:var(--ember)}
+.pv__hint{text-align:center;padding:0 var(--gut) 16px;font-family:var(--it);font-style:italic;font-size:16px;color:var(--muted)}
+@media (max-width:640px){
+  .pv__stage{padding:0 12px}
+  .pv__nav{top:auto;bottom:18px;margin:0;width:46px;height:46px}
+  .pv__bot{padding:0 64px}
+}
 
 /* ===== СЦЕНА 05 · БАНКЕТЫ-ТИТРЫ ===== */
 .cb{padding:clamp(90px,10vw,140px) 0 0}
@@ -695,6 +735,19 @@ section{position:relative}
   <button class="scr__close" id="scrClose" type="button">Закрыть <span aria-hidden="true">✕</span></button>
 </div>
 
+<!-- просмотр страниц полного меню -->
+<div class="pv" id="pv" role="dialog" aria-modal="true" aria-label="Полное меню" hidden>
+  <div class="pv__top"><span><b>Полное меню</b> · <span id="pvNo">01 / 01</span></span>
+    <button class="scr__close" id="pvClose" type="button">Закрыть <span aria-hidden="true">✕</span></button></div>
+  <div class="pv__stage" id="pvStage" data-lenis-prevent></div>
+  <div class="pv__bot">
+    <button class="pv__nav pv__prev" id="pvPrev" type="button" aria-label="Предыдущая страница">←</button>
+    <button class="pv__nav pv__next" id="pvNext" type="button" aria-label="Следующая страница">→</button>
+    <div class="pv__thumbs" id="pvThumbs"></div>
+    <p class="pv__hint" id="pvHint">Листайте стрелками или свайпом</p>
+  </div>
+</div>
+
 <div class="mbar" id="mbar">
   <a class="btn btn--fire" href="#book">Бронь</a>
   <a class="btn btn--line" id="mDeliv" href="https://wa.me/77753546825" target="_blank" rel="noopener">Доставка</a>
@@ -731,8 +784,10 @@ const MENU = [
     {n:'Хинкали с грибами', p:2900, d:'Шампиньоны, домашние сливки и чеснок'},
     {n:'Хинкали с картофелем и грибами', p:2900, d:'Картофельное пюре с грибами и сливками'},
     {n:'Хинкали с семгой и овощами', p:4100, d:'Подаются в нежном сливочном соусе'},
+    {n:'Хинкали с семгой в сливках', p:4000},
     {n:'Хинкали с курицей и креветками', p:4000},
     {n:'Хинкали жареные с телятиной', p:3500},
+    {n:'Хинкали смешанные', p:2900},
     {n:'Хинкали с вишней', p:2350, d:'Сладкие — на десерт'}
   ]},
   {id:'khachapuri', title:'Хачапури', img:'images/khachapuri.jpg', tagline:'Горячие, из печи', items:[
@@ -744,62 +799,127 @@ const MENU = [
     {n:'Хачапури с курицей и грибами', p:3990},
     {n:'Хачапури с копченым сулугуни', p:3790},
     {n:'Пеновани', p:3750, d:'Слоёный хачапури с грузинскими сырами'},
-    {n:'Кубдари', p:3750, d:'Мясной пирог с телятиной, томатами и зеленью'},
+    {n:'Кубдаридзе', p:3750, d:'Мясной пирог с телятиной, томатами и зеленью'},
+    {n:'АйдаЧебурек', p:2200, d:'Огромный чебурек — с телятиной или с сыром'},
+    {n:'Мини-чебуреки с телятиной (5 шт)', p:2350},
+    {n:'Мини-чебуреки с курицей и сыром (5 шт)', p:2350},
+    {n:'Мини-чебуреки с семгой (5 шт)', p:3850},
     {n:'Лепешка Пури с сыром и чесноком', p:800},
     {n:'Шоти — грузинский хлеб', p:450}
   ]},
   {id:'mangal', title:'Мангал', img:'images/mangal.jpg', tagline:'С дымком живых углей', items:[
-    {n:'Шашлычный микс', p:24990, d:'Баранина, телятина, филе, утка, ребра с курдюком, люля, крылышки, овощи и картофель на мангале — на большую компанию', hit:1},
-    {n:'Ассорти из шашлыков', p:3850, d:'Люля баранина, утка, баранина, телятина, филе'},
+    {n:'Шашлычный микс 1', p:24990, d:'Баранина, телятина, филе, утка, печень с курдюком, люля из баранины, крылышки, овощи и картофель на мангале — на большую компанию', hit:1},
+    {n:'Шашлычный микс 2', p:22000, d:'Свинина, телятина, филе, утка, окорочка, печень с курдюком, люля куриное, грибы на мангале'},
+    {n:'Ассорти из шашлыков', p:3850, d:'Люля из баранины, утка, баранина, телятина, филе'},
+    {n:'Ассорти из шашлыков со свининой', p:3750, d:'Люля из баранины, утка, филе, свинина, телятина'},
     {n:'Люля-кебаб из баранины', p:2890},
+    {n:'Люля куриное', p:1900},
     {n:'Баранина', p:4500},
     {n:'Телятина', p:4900},
     {n:'Рулет из телятины с курдюком', p:3600},
-    {n:'Свинина кавказская', p:2990},
     {n:'Конина', p:4200},
+    {n:'Свинина кавказская', p:2990},
+    {n:'Свинина', p:2750},
+    {n:'Свинина ребро', p:3200},
     {n:'Утка', p:2990},
-    {n:'Люля куриное', p:1900},
+    {n:'Индейка', p:2900},
+    {n:'Куриное филе', p:2100},
+    {n:'Окорочка', p:1990},
     {n:'Крылышки', p:2000},
-    {n:'Овощи на мангале', p:1950}
+    {n:'Печень с курдюком', p:2300},
+    {n:'Маринованный курдюк', p:2300},
+    {n:'Бараньи семечки', p:2250},
+    {n:'Грибы на мангале', p:1990},
+    {n:'Овощи на мангале', p:1950},
+    {n:'Кукуруза запеченная', p:1650},
+    {n:'Запеченный картофель на углях', p:1500}
   ]},
   {id:'hot', title:'Горячее', img:'images/table.jpg', ph:1, tagline:'Чкмерули, оджахури, чашушули', items:[
     {n:'Курочка Чкмерули', p:4100, d:'Цыплёнок, запечённый в сливках с чесноком и грузинскими специями', hit:1},
-    {n:'Оджахури из свинины', p:3800, d:'Домашнее жаркое с картофелем, помидорами и аджикой'},
-    {n:'Оджахури из курицы', p:3800},
-    {n:'Чашушули с говядиной', p:6200, d:'Томлёная говядина в томатном соусе со сладким перцем'},
+    {n:'Оджахури из свинины', p:3800, d:'Домашнее жаркое с картофелем, помидорами, аджикой, сванской солью и зеленью'},
+    {n:'Оджахури из курицы', p:3800, d:'Филе курицы с запечёнными картофельными дольками и грузинскими специями'},
+    {n:'Чашушули с говядиной', p:6200, d:'Томлёная в томатном соусе телятина со сладким перцем, луком, чесноком, кинзой и домашней аджикой'},
+    {n:'Остри', p:6200, d:'Фирменная острая говядина (ребра) или баранина в аджике и грузинских специях'},
     {n:'Говяжьи ребра по-грузински', p:6200, d:'С соусом барбекю'},
-    {n:'Остри', p:6200, d:'Фирменная острая говядина в аджике и грузинских специях'},
+    {n:'Свиные ребра по-грузински', p:3900, d:'С соусом барбекю'},
+    {n:'Цыпленок табака', p:4500},
+    {n:'Сациви из курицы', p:3100, d:'Из семги — 4 850 ₸'},
     {n:'Кырдак из баранины', p:4500},
+    {n:'Дамляма', p:4700, d:'Тушёная баранина с картофелем'},
+    {n:'Оссобуко из говядины', p:6200},
+    {n:'Каре ягненка', p:7200},
+    {n:'Купаты в кеци', p:4900, d:'На выбор: говядина, свинина, баранина, курица'},
+    {n:'Долма по-авлабарски', p:4100},
+    {n:'Тамина сливочная курочка с грибами', p:3700},
+    {n:'Катами в хрустящей корочке', p:3000},
+    {n:'Лагман жареный с телятиной', p:2990},
+    {n:'Манты жареные смешанные', p:3500},
+    {n:'Манты жареные говядина', p:3500},
+    {n:'Стейк из говядины с овощами', p:7990},
+    {n:'Стейк из семги с овощами', p:7990},
+    {n:'Стейк из свинины на гриле с овощами', p:4900},
+    {n:'Стейк из куриной грудки', p:4200},
+    {n:'Медальон из семги', p:6500, d:'В апельсиновом соусе'},
+    {n:'Семга с брокколи под сливочным соусом', p:7200},
+    {n:'Соте из семги в кеци с овощами', p:5700, d:'В сливочном соусе'},
     {n:'Креветидзе Чкмерули', p:5690, d:'Запечённые в сливках сочные креветки'},
-    {n:'Медальон из семги', p:6500, d:'В апельсиновом соусе'}
+    {n:'Креветидзе Том-ям', p:5690},
+    {n:'Креветки-гриль на шпажках', p:5800, d:'С соусом Руй'},
+    {n:'Жаркое из морепродуктов в соусе Чкмерули', p:6500},
+    {n:'Мидии в сырно-чесночном соусе', p:5750},
+    {n:'Мидии в соусе 4 сыра', p:5750},
+    {n:'Шампиньоны в кеци с сыром сулугуни', p:4100},
+    {n:'Картофель жареный по-домашнему', p:2100, d:'С грибами и сливками'},
+    {n:'Картофель жареный с охотничьими колбасками', p:2100},
+    {n:'Сахарная косточка', p:2100, d:'С гренками и соусом чимичурри'}
   ]},
   {id:'zharovni', title:'Жаровни', img:'images/khinkali2.jpg', ph:1, tagline:'Шкворчат прямо на столе', items:[
-    {n:'Жаровня из баранины', p:5200, hit:1},
+    {n:'Жаровня из баранины', p:5700, hit:1},
     {n:'Жаровня из говядины', p:5200},
     {n:'Жаровня из конины', p:5200},
     {n:'Жаровня из свинины', p:3650},
     {n:'Жаровня из курицы', p:3650},
     {n:'Жаровня из утки', p:3650},
     {n:'Жаровня со свининой в сливочно-грибном соусе', p:3750},
-    {n:'Жаровня с семгой в сливочно-грибном соусе', p:5890}
+    {n:'Жаровня с семгой в сливочно-грибном соусе', p:5890},
+    {n:'Жаровня из курицы в сливочно-грибном соусе', p:3750}
   ]},
   {id:'soups', title:'Супы', img:'images/hero.jpg', ph:1, tagline:'Харчо, который согревает', items:[
     {n:'Харчо', p:2100, d:'Грузинский суп с телятиной, острый и пряный', hit:1},
     {n:'Шурпа', p:2650, d:'Баранина или говядина'},
     {n:'Лагман по-домашнему', p:2200},
+    {n:'Кукси', p:2200},
+    {n:'Мясо по-казахски', p:3400},
     {n:'Суп Батуми', p:4700, d:'Сливочный суп с морепродуктами'},
-    {n:'Том-ям', p:4700, d:'С курицей, креветками, мидиями и кальмарами'},
+    {n:'Том-ям', p:4700, d:'Острый суп с курицей, креветками, грибами, мидиями и кальмарами'},
     {n:'Грибной крем-суп', p:1900, d:'С чесночными гренками'},
+    {n:'Куриный бульон с домашней лапшой', p:1350},
+    {n:'Пельмени', p:1450},
     {n:'Окрошка', p:1450}
   ]},
   {id:'snacks', title:'Закуски', img:'images/wine.jpg', ph:1, tagline:'К вину и тостам', items:[
     {n:'Бадриджани', p:3300, d:'Рулетики из баклажанов с орехами', hit:1},
     {n:'Мясная тарелка', p:5500, d:'Телятина копчёная, курица, индейка'},
     {n:'Сырная тарелка', p:5500},
+    {n:'Рыбка заморская с икрой', p:5750, d:'Семга, эсколар'},
+    {n:'Кавказская нарезка', p:2700},
+    {n:'Соленья по-кахетински', p:2750},
+    {n:'Брускидзе', p:3900, d:'С семгой, ростбифом и томатами'},
+    {n:'Селедочка с картофелем', p:3900},
+    {n:'Сырные палочки', p:2750, d:'Со сливочным соусом'},
+    {n:'Японский вкус', p:5200},
+    {n:'Летний бриз', p:2500},
+    {n:'Тарталетки запечённые с грибами', p:3990},
+    {n:'Тарталетки с креветками и лососем', p:6500},
+    {n:'Тарталетки с грушей и ананасом', p:3990},
+    {n:'Оливки, маслины, лимон', p:2250},
     {n:'Фруктовая тарелка', p:4800}
   ]}
 ];
-const MENU_PDF = 'https://drive.google.com/drive/folders/1f-yYnsAE96KEOrxjECVXZCMJpXMs4i6l';
+/* Фото страниц полного меню. Положить в images/menu/ и вписать по порядку, например:
+   const MENU_PAGES = ['images/menu/1.jpg','images/menu/2.jpg','images/menu/3.jpg'];
+   Пока список пустой — показываются свёрстанные страницы из массива MENU. */
+const MENU_PAGES = ['images/menu/1.jpg','images/menu/2.jpg','images/menu/3.jpg','images/menu/4.jpg'];
 
 /* ================= УТИЛИТЫ ================= */
 const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
@@ -934,15 +1054,17 @@ document.addEventListener('DOMContentLoaded', () => {
     b.addEventListener('click',()=>openScreen(i,b));
   });
   (function(){
-    const a=document.createElement('a'); a.className='frame frame--pdf'; a.href=MENU_PDF; a.target='_blank'; a.rel='noopener'; a.dataset.cursor='▶ Открыть PDF';
+    const a=document.createElement('button'); a.type='button'; a.className='frame frame--pdf'; a.dataset.cursor='▶ Листать';
+    a.setAttribute('aria-label','Открыть полное меню');
     const im=document.createElement('span'); im.className='frame__img';
     const no=document.createElement('span'); no.className='frame__no'; no.textContent='КАДР '+pad(MENU.length+1);
     const b=document.createElement('b'); b.textContent='Полное меню';
-    const e=document.createElement('em'); e.textContent='салаты, пицца, десерты и напитки — в PDF';
+    const e=document.createElement('em'); e.textContent=MENU_PAGES.length?'все страницы меню — листайте как книгу':'все разделы и цены — листайте как книгу';
     im.append(no,b,e);
     const cap=document.createElement('span'); cap.className='frame__cap';
-    const t=document.createElement('b'); t.textContent='Режиссёрская версия'; const s=document.createElement('small'); s.textContent='Открыть PDF →';
+    const t=document.createElement('b'); t.textContent='Режиссёрская версия'; const s=document.createElement('small'); s.textContent='Смотреть страницы →';
     cap.append(t,s); a.append(im,cap); track.append(a);
+    a.addEventListener('click',()=>openPages(0,a));
   })();
   const reelVp=$('#reelVp'), reelBar=$('#reelBar');
   reelVp.addEventListener('scroll',()=>{ const m=reelVp.scrollWidth-reelVp.clientWidth; if(m>0 && !reelVp.classList.contains('pinned')) reelBar.style.transform='scaleX('+(reelVp.scrollLeft/m)+')'; },{passive:true});
@@ -985,6 +1107,87 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   scrClose.addEventListener('click',()=>closeScreen());
   addEventListener('keydown',e=>{ if(e.key==='Escape'){ if(!scr.hidden) closeScreen(); else if(document.body.classList.contains('menu-open')) setMenu(false);} if(e.key==='Tab' && !scr.hidden){ const f=[...scr.querySelectorAll('a,button')]; const first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus()} else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus()} } });
+
+  /* ---------- Полное меню: листалка страниц ---------- */
+  const pv=$('#pv'), pvStage=$('#pvStage'), pvThumbs=$('#pvThumbs'), pvPrev=$('#pvPrev'), pvNext=$('#pvNext');
+  const slides = MENU_PAGES.length ? MENU_PAGES.map(src=>({img:src})) : MENU.map(cat=>({cat}));
+  let pvI=0, pvFrom=null;
+  $('#pvHint').textContent = MENU_PAGES.length ? 'Листайте стрелками или свайпом · нажмите на страницу, чтобы приблизить' : 'Листайте стрелками или свайпом';
+  slides.forEach((s,i)=>{
+    const b=document.createElement('button'); b.type='button'; b.className='pv__th'; b.setAttribute('aria-label','Страница '+(i+1));
+    if(s.img){ const im=document.createElement('img'); im.src=s.img; im.alt=''; im.loading='lazy'; b.append(im); } else b.textContent=pad(i+1);
+    b.addEventListener('click',()=>pvShow(i)); pvThumbs.append(b);
+  });
+  function paperPage(c,i){
+    const p=document.createElement('div'); p.className='paper';
+    const top=document.createElement('div'); top.className='paper__top';
+    const l=document.createElement('span'); l.textContent='Супра · меню'; const r=document.createElement('span'); r.textContent='стр. '+pad(i+1)+' / '+pad(slides.length);
+    top.append(l,r);
+    const h=document.createElement('h3'); h.textContent=c.title;
+    const tg=document.createElement('div'); tg.className='paper__tag'; tg.textContent=c.tagline||'';
+    p.append(top,h,tg);
+    c.items.forEach(it=>{
+      const row=document.createElement('div'); row.className='pp';
+      const n=document.createElement('h4'); n.textContent=it.n; if(it.hit){ const t=document.createElement('i'); t.textContent='хит'; n.append(t); }
+      const pr=document.createElement('b'); pr.textContent=fmt(it.p); row.append(n,pr);
+      if(it.d){ const d=document.createElement('p'); d.textContent=it.d; row.append(d); }
+      p.append(row);
+    });
+    const f=document.createElement('div'); f.className='paper__foot'; f.textContent='Цены в тенге · актуальность уточняйте у администратора'; p.append(f);
+    return p;
+  }
+  function pvShow(i, dir){
+    if(i<0||i>=slides.length) return;
+    dir = dir || (i>=pvI?1:-1); pvI=i;
+    pvStage.classList.remove('zoom'); pvStage.textContent=''; pvStage.scrollTo(0,0);
+    const s=slides[i], wrap=document.createElement('div'); wrap.className='pv__slide'; wrap.style.setProperty('--dx',(dir*40)+'px');
+    if(s.img){
+      const im=document.createElement('img'); im.src=s.img; im.alt='Меню, страница '+(i+1); im.draggable=false;
+      im.addEventListener('click',e=>{
+        if(pvMoved) return;
+        const r=im.getBoundingClientRect(), fx=(e.clientX-r.left)/r.width, fy=(e.clientY-r.top)/r.height;
+        const z=pvStage.classList.toggle('zoom');
+        if(z) requestAnimationFrame(()=>{ pvStage.scrollLeft=fx*im.offsetWidth-pvStage.clientWidth/2; pvStage.scrollTop=fy*im.offsetHeight-pvStage.clientHeight/2; });
+      });
+      wrap.append(im);
+      [i-1,i+1].forEach(k=>{ if(slides[k]&&slides[k].img){ const pre=new Image(); pre.src=slides[k].img; } });
+    } else wrap.append(paperPage(s.cat,i));
+    pvStage.append(wrap);
+    $('#pvNo').textContent=pad(i+1)+' / '+pad(slides.length);
+    [...pvThumbs.children].forEach((t,k)=>t.classList.toggle('on',k===i));
+    pvThumbs.children[i].scrollIntoView({inline:'center',block:'nearest'});
+    pvPrev.disabled=i===0; pvNext.disabled=i===slides.length-1;
+  }
+  function openPages(i, from){
+    pvFrom=from||null; pv.hidden=false; document.body.classList.add('pv-open');
+    if(lenis) lenis.stop(); else document.body.style.overflow='hidden';
+    pvShow(i,1);
+    if(hasGsap) gsap.fromTo(pv,{opacity:0},{opacity:1,duration:.45,ease:'power2.out'});
+    setTimeout(()=>$('#pvClose').focus({preventScroll:true}),50);
+  }
+  function closePages(){
+    pv.hidden=true; document.body.classList.remove('pv-open');
+    if(lenis) lenis.start(); else document.body.style.overflow='';
+    if(pvFrom) pvFrom.focus({preventScroll:true});
+  }
+  $('#pvClose').addEventListener('click',closePages);
+  pvPrev.addEventListener('click',()=>pvShow(pvI-1,-1));
+  pvNext.addEventListener('click',()=>pvShow(pvI+1,1));
+  /* свайп */
+  let pvX=null, pvY=null, pvMoved=false;
+  pvStage.addEventListener('pointerdown',e=>{ pvX=e.clientX; pvY=e.clientY; pvMoved=false; });
+  pvStage.addEventListener('pointerup',e=>{
+    if(pvX===null) return; const dx=e.clientX-pvX, dy=e.clientY-pvY; pvX=null;
+    if(pvStage.classList.contains('zoom')) return;
+    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)*1.3){ pvMoved=true; pvShow(pvI+(dx<0?1:-1), dx<0?1:-1); setTimeout(()=>pvMoved=false,50); }
+  });
+  addEventListener('keydown',e=>{
+    if(pv.hidden) return;
+    if(e.key==='Escape'){ e.stopImmediatePropagation(); closePages(); }
+    else if(e.key==='ArrowRight') pvShow(pvI+1,1);
+    else if(e.key==='ArrowLeft') pvShow(pvI-1,-1);
+    else if(e.key==='Tab'){ const f=[...pv.querySelectorAll('button:not(:disabled)')]; const first=f[0], last=f[f.length-1]; if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus()} else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus()} }
+  });
 
   /* ---------- Банкеты: смена кадров через маску ---------- */
   const figs=$$('#cbScreen figure'), cbLbl=$('#cbLbl'), crs=$$('.cr'); let cbCur=0;
