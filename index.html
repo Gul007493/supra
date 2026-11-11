@@ -132,6 +132,8 @@ section{position:relative}
 .hero__media img{filter:contrast(1.08) saturate(1.05) brightness(.82);animation:kb 22s ease-out both}
 @keyframes kb{from{transform:scale(1.16)}to{transform:scale(1)}}
 .media-v{opacity:0;transition:opacity .8s}
+/* hero-видео чуть увеличено: угол с водяным знаком Kling (справа снизу) уходит за край кадра */
+.hero__media .media-v{transform:scale(1.22);transform-origin:25% 25%;filter:contrast(1.08) saturate(1.05) brightness(.82)}
 .has-video .media-v{opacity:1}
 .hero__shade{position:absolute;inset:0;pointer-events:none;background:
   linear-gradient(180deg,rgba(10,9,8,.7) 0%,transparent 22%,transparent 45%,rgba(10,9,8,.55) 72%,rgba(10,9,8,.92) 100%)}
@@ -769,7 +771,7 @@ const SUPRA = {
    hero  — бесшовный луп 6–8 с, 16:9 (src) и 9:16 (srcMobile).
    khach — 6–10 с, для скролла кодировать с ключевым кадром на каждом кадре (см. инструкцию). */
 const MEDIA = {
-  hero:  { src: '', srcMobile: '', poster: 'images/hero.jpg' },
+  hero:  { src: 'videos/hero.mp4', srcMobile: '', poster: 'images/hero.jpg' },
   khach: { src: '', srcMobile: '', poster: 'images/khachapuri.jpg' }
 };
 
