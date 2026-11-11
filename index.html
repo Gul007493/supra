@@ -145,11 +145,13 @@ section{position:relative}
 .crop{position:absolute;width:26px;height:26px;border:1px solid rgba(239,230,214,.5)}
 .crop--tl{top:84px;left:calc(var(--gut) - 14px);border-right:0;border-bottom:0}
 .crop--tr{top:84px;right:calc(var(--gut) - 14px);border-left:0;border-bottom:0}
-.hero__title{position:absolute;left:0;right:0;bottom:-.07em;margin:0;text-align:center;font-weight:700;font-size:31vw;line-height:.8;letter-spacing:-.01em;color:var(--cream);transform-origin:50% 100%;pointer-events:none;white-space:nowrap;will-change:transform}
+.hero{--ts:min(31vw,54vh);--tb:clamp(14px,2.4vh,30px)}
+/* .23em — компенсация метрик Oswald: базовая линия ниже блока + хвост «У» */
+.hero__title{position:absolute;left:0;right:0;bottom:calc(var(--tb) + var(--ts) * .23);margin:0;text-align:center;font-weight:700;font-size:var(--ts);line-height:.8;letter-spacing:-.01em;color:var(--cream);transform-origin:50% 100%;pointer-events:none;white-space:nowrap;will-change:transform}
 .hero__title .ch{display:inline-block}
 .js .hero__title .ch{transform:translateY(105%)}
 .ready .hero__title .ch{transform:none;transition:transform 1.5s var(--eo) calc(.3s + var(--i)*.075s)}
-.hero__sub{position:absolute;left:var(--gut);right:var(--gut);bottom:calc(31vw * .74 + 26px);display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
+.hero__sub{position:absolute;left:var(--gut);right:var(--gut);bottom:calc(var(--tb) + var(--ts) * 1.01 + 28px);display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
 .hero__subin{display:contents}
 .hero__txt .eyebrow{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--ember);margin-bottom:12px;display:block}
 .hero__btns{display:flex;gap:12px;flex-wrap:wrap}
@@ -336,7 +338,7 @@ section{position:relative}
 /* ===== ФИНАЛ · ТИТРЫ ===== */
 .fin{padding:clamp(80px,12vw,160px) 0 140px;text-align:center;overflow:hidden}
 .fin__the{font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
-.fin__logo{font-weight:700;font-size:clamp(90px,20vw,300px);line-height:1;letter-spacing:.02em;margin:18px 0 .02em;transform-origin:50% 100%}
+.fin__logo{font-weight:700;font-size:clamp(90px,20vw,300px);line-height:1;letter-spacing:.02em;margin:18px 0 .24em;transform-origin:50% 100%}
 .fin__sub{position:relative;z-index:1;font-family:var(--it);font-style:italic;font-size:clamp(22px,2.4vw,32px);color:var(--cream2)}
 .roles{max-width:860px;margin:clamp(70px,9vw,120px) auto 0;display:grid;gap:clamp(40px,5vw,64px)}
 .roles h4{font-weight:500;font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--ember);margin-bottom:18px}
@@ -1071,13 +1073,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const desk=ctx.conditions.desk, hero=$('.hero'), title=$('#heroTitle');
     const fx=desk?22:5, sc=desk?.24:.42;
     /* отступ кадра сверху: чтобы уменьшенное «СУПРА» не залезало под шапку на невысоких экранах */
-    const getFy=()=>{ const fy=Math.max(desk?15:26,(hdr.offsetHeight+44+title.offsetHeight*sc)/hero.offsetHeight*100); hero.style.setProperty('--fy',fy.toFixed(2)+'%'); return fy; };
+    const getFy=()=>{ const em=title.offsetHeight/.8, fy=Math.max(desk?15:26,(hdr.offsetHeight+34+em*1.03*sc)/hero.offsetHeight*100); hero.style.setProperty('--fy',fy.toFixed(2)+'%'); return fy; };
     const tl=gsap.timeline({scrollTrigger:{trigger:hero,start:'top top',end:'+=110%',pin:true,scrub:.7,invalidateOnRefresh:true}});
     tl.to('#heroSub',{autoAlpha:0,y:-50,duration:.3,ease:'power2.in'},0)
       .to('#heroHud',{autoAlpha:0,duration:.25},0)
       .fromTo('#heroMedia',{clipPath:'inset(0% 0% 0% 0% round 0px)'},{clipPath:()=>{ const fy=getFy(); return `inset(${fy}% ${fx}% ${fy}% ${fx}% round 4px)`; },ease:'power2.inOut',duration:1},0)
       .to('.hero__shade',{opacity:.25,duration:1},0)
-      .to(title,{scale:sc,y:()=>{ const bottom=title.offsetTop+title.offsetHeight; return hero.offsetHeight*getFy()/100-14-bottom; },ease:'power2.inOut',duration:1},0)
+      .to(title,{scale:sc,y:()=>{ const bottom=title.offsetTop+title.offsetHeight; return hero.offsetHeight*getFy()/100-12-(title.offsetHeight/.8)*.23*sc-bottom; },ease:'power2.inOut',duration:1},0)
       .to('#heroFrame',{autoAlpha:1,duration:.3},.72);
   });
 
