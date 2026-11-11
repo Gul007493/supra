@@ -1055,6 +1055,8 @@ const plural = (n,a,b,c) => { const m=n%10, h=n%100; return (m===1&&h!==11)?a:(m
 const reduced = false;
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const isMob = () => innerWidth < 900;
+/* сенсорный экран (телефон/планшет): там только родная прокрутка, без Lenis */
+const touch = matchMedia('(hover: none), (pointer: coarse)').matches;
 
 /* ================= ВИДЕО (подменяет фото-заглушку) ================= */
 function mountVideo(box, cfg, loop){
@@ -1078,7 +1080,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Lenis ---------- */
   let lenis = null;
-  if(window.Lenis && !reduced){
+  /* адресная строка мобильного браузера меняет высоту экрана — не пересчитывать сцены из-за этого */
+  if(hasGsap) ScrollTrigger.config({ignoreMobileResize:true});
+  if(window.Lenis && !reduced && !touch){
     lenis = new Lenis({lerp:.1, smoothWheel:true});
     if(hasGsap){ lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add(t=>lenis.raf(t*1000)); gsap.ticker.lagSmoothing(0); }
     else { const r=t=>{lenis.raf(t);requestAnimationFrame(r)}; requestAnimationFrame(r); }
@@ -1153,7 +1157,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if(khVideo && khScrub && khVideo.duration){ const tt=p*(khVideo.duration-.05); if(Math.abs(khVideo.currentTime-tt)>.03) khVideo.currentTime=tt; }
   }
   {
-    const tick=()=>{ khMeasure(); const r=kh.getBoundingClientRect(); if(r.bottom>-50 && r.top<innerHeight+50) khRender(); requestAnimationFrame(tick); };
+    /* замер только при прокрутке (не каждый кадр), анимация доезжает плавно */
+    let khDirty=true, khVisible=false, khFirst=true;
+    addEventListener('scroll',()=>{ khDirty=true; },{passive:true});
+    addEventListener('resize',()=>{ khDirty=true; });
+    const tick=()=>{
+      if(khDirty){ khDirty=false; khMeasure(); const r=kh.getBoundingClientRect(); khVisible = r.bottom>-50 && r.top<innerHeight+50; }
+      if(khVisible && (khFirst || Math.abs(khTarget-khP)>.0005)){ khFirst=false; khRender(); }
+      requestAnimationFrame(tick);
+    };
     requestAnimationFrame(tick);
   }
   const ach = MENU[1].items[0]; $('#khPrice').textContent = fmt(ach.p);
@@ -1468,7 +1480,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fx=desk?22:5, sc=desk?.24:.42;
     /* отступ кадра сверху: чтобы уменьшенное «СУПРА» не залезало под шапку на невысоких экранах */
     const getFy=()=>{ const em=title.offsetHeight/.8, fy=Math.max(desk?15:26,(hdr.offsetHeight+34+em*1.03*sc)/hero.offsetHeight*100); hero.style.setProperty('--fy',fy.toFixed(2)+'%'); return fy; };
-    const tl=gsap.timeline({scrollTrigger:{trigger:hero,start:'top top',end:'+=110%',pin:true,scrub:.7,invalidateOnRefresh:true}});
+    const tl=gsap.timeline({scrollTrigger:{trigger:hero,start:'top top',end:'+=110%',pin:true,anticipatePin:1,scrub:.7,invalidateOnRefresh:true}});
     tl.to('#heroSub',{autoAlpha:0,y:-50,duration:.3,ease:'power2.in'},0)
       .to('#heroHud',{autoAlpha:0,duration:.25},0)
       .fromTo('#heroMedia',{clipPath:'inset(0% 0% 0% 0% round 0px)'},{clipPath:()=>{ const fy=getFy(); return `inset(${fy}% ${fx}% ${fy}% ${fx}% round 4px)`; },ease:'power2.inOut',duration:1},0)
@@ -1493,7 +1505,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Финальные титры — лёгкий «наезд» */
   gsap.fromTo('.fin__logo',{scale:.86},{scale:1,ease:'none',scrollTrigger:{trigger:'.fin',start:'top bottom',end:'top 30%',scrub:true}});
 
-  addEventListener('load',()=>ScrollTrigger.refresh());
+  /* ScrollTrigger сам пересчитывается после загрузки страницы; на ПК добавочно — если шрифты поменяли размеры */
+  if(!touch && document.fonts) document.fonts.ready.then(()=>ScrollTrigger.refresh());
 });
 </script>
 </body>
